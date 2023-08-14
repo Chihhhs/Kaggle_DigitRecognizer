@@ -25,8 +25,6 @@ class TestDataset(Dataset):
     def __len__(self):
         return self.n_samples
 
-
-
 test = TestDataset()
 test_loader = DataLoader(dataset=test ,batch_size = batch_size,shuffle =True,num_workers=0)
 
@@ -47,10 +45,6 @@ with torch.no_grad():
         _,predicted = torch.max(outputs,1)
         n_samples += labels.size(0)
         n_correct +=(predicted ==labels).sum().item()
-
-        for i in range(batch_size):
-            label =labels[i]
-            pred = predicted[i]
 
     acc = 100.0 * n_correct / n_samples
     print(f'Accuracy of the network:{acc} %')
