@@ -18,7 +18,8 @@ Split **train.csv** to train_data(0.8) and test_data(0.2).
 
 Create **CusDataset** class , add **DataLoader** to set dataset and load data.
 
-and Accuracy ![1](./Accuracy/Training(1).png)
+First training Accuracy.
+![1](./Accuracy/Training(1).png)
 
 ## Write ans
 
