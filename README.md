@@ -2,6 +2,11 @@
 
 [Kaggle Recognizer Competition.](https://www.kaggle.com/competitions/digit-recognizer)
 
+```bash
+# install package.
+pip install -r requirements.txt
+```
+
 ## Training
 
 `Train.py` : Train and Val.
@@ -19,6 +24,7 @@ Split **train.csv** to train_data(0.8) and test_data(0.2).
 Create **CusDataset** class , add **DataLoader** to set dataset and load data.
 
 First training Accuracy.
+
 ![1](./Accuracy/Training(1).png)
 
 ## Write ans
