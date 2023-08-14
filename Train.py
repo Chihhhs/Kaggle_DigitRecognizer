@@ -11,12 +11,12 @@ num_classes =10
 num_epochs = 4
 batch_size = 4 
 
-Wholedata = np.loadtxt(FILE,delimiter=",",dtype=np.float32 ,skiprows=1)
+Total_data = np.loadtxt(FILE,delimiter=",",dtype=np.float32 ,skiprows=1)
 
 # Spilt train and test
-train_data, test_data = train_test_split(Wholedata, test_size=0.2, random_state=42)
+train_data, test_data = train_test_split(Total_data, test_size=0.2, random_state=42)
 
-class CuDataset(Dataset):
+class CusDataset(Dataset):
     def __init__(self,data):
         # train_data loading
         self.img = torch.from_numpy(data[:, 1:].reshape(-1,1,28,28))
@@ -30,8 +30,8 @@ class CuDataset(Dataset):
         return self.n_samples
 
 
-train_data = CuDataset(train_data)
-test_data = CuDataset(test_data)
+train_data = CusDataset(train_data)
+test_data = CusDataset(test_data)
 
 
 train_loader =DataLoader(dataset=train_data , batch_size =batch_size,shuffle =True,num_workers=0)
