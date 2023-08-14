@@ -1,27 +1,27 @@
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader ,Dataset
-import torchvision.transforms as transforms
-import torchvision
-import os
+from sklearn.model_selection import train_test_split
 import numpy as np
-import csv
-import pandas as pd
 
 MODEL_FILE ="./model/Kaggle_Mnist.pt"
-TRAIN_FILE = "./digit-recognizer/train.csv"
+FILE = "./digit-recognizer/train.csv"
 
 num_classes =10
 num_epochs = 4
 batch_size = 4 
 
-class TrainDataset(Dataset):
-    def __init__(self):
-        # data loading
-        xy = np.loadtxt(TRAIN_FILE,delimiter=",",dtype=np.float32 ,skiprows=1)
-        self.img = torch.from_numpy(xy[:, 1:].reshape(-1,28,28))
-        self.label = torch.from_numpy(xy[:, 0])
-        self.n_samples =xy.shape[0]
+Wholedata = np.loadtxt(FILE,delimiter=",",dtype=np.float32 ,skiprows=1)
+
+# Spilt train and test
+train_data, test_data = train_test_split(Wholedata, test_size=0.2, random_state=42)
+
+class CuDataset(Dataset):
+    def __init__(self,data):
+        # train_data loading
+        self.img = torch.from_numpy(data[:, 1:].reshape(-1,1,28,28))
+        self.label = torch.from_numpy(data[:, 0]).to(torch.int64)
+        self.n_samples =data.shape[0]
         
     def __getitem__(self,index):
         return self.img[index],self.label[index]
@@ -29,16 +29,16 @@ class TrainDataset(Dataset):
     def __len__(self):
         return self.n_samples
 
-data = TrainDataset()
+
+train_data = CuDataset(train_data)
+test_data = CuDataset(test_data)
 
 
-dataloader =DataLoader(dataset=data , batch_size =batch_size,shuffle =True,num_workers=0)
+train_loader =DataLoader(dataset=train_data , batch_size =batch_size,shuffle =True,num_workers=0)
+test_loader =DataLoader(dataset=test_data , batch_size =batch_size,shuffle =False,num_workers=0)
 
 # if os.path.exists(MODEL_FILE):
 #     model.load_state_dict(torch.load(MODEL_FILE))
-
-
-classes = ('1' , '2' , '3' , '4', '5','6','7','8','9','0')
 
 class ConvNeuralNet(nn.Module):
     def __init__(self,num_classes):
@@ -68,20 +68,17 @@ class ConvNeuralNet(nn.Module):
         x = self.fc1(x)
         x = self.relu(x)
         x = self.fc2(x)
-       
         return x
 
-if __name__ =="__main__":      
-    model = ConvNeuralNet(num_classes)
+model = ConvNeuralNet(num_classes)
+
+def train():
     criterion =nn.CrossEntropyLoss()
     optimizer =torch.optim.Adam(model.parameters(),lr =0.01)
 
-    n_total_steps = len(dataloader)
+    n_total_steps = len(train_loader)
     for epoch in range(num_epochs):
-        for i ,(images,labels) in enumerate(dataloader):
-            images = images.unsqueeze(1)  # Adds an extra channel dimension
-            labels = labels.to(torch.long)
-            # print(images.shape)
+        for i ,(images,labels) in enumerate(train_loader):
             
             outputs=model(images)
             loss =criterion(outputs,labels)
@@ -90,9 +87,25 @@ if __name__ =="__main__":
             loss.backward()
             optimizer.step()
             
-            if(i+1) %5000 ==0:
+            if(i+1) % 4000 ==0:
                 print(f'epoch {epoch+1} / {num_epochs}, step {i+1}/{n_total_steps}, loss = {loss.item():.4f}')
     print("Finish Training.")
+    # torch.save(model.state_dict(),MODEL_FILE)
+    
+def test():
+    with torch.no_grad():
+        n_correct =0
+        n_samples =0
+        for images , labels in test_loader:
+            outputs =model(images)
+            # max return (value , index)
+            _,predicted = torch.max(outputs,1)
+            n_samples += labels.size(0)
+            n_correct +=(predicted ==labels).sum().item()
 
-    torch.save(model.state_dict(),MODEL_FILE)
+        acc = 100.0 * n_correct / n_samples
+        print(f'Accuracy of the network:{acc:.4f} %')
 
+if __name__ =="__main__":      
+    train()
+    test()
