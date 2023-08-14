@@ -90,9 +90,9 @@ if __name__ =="__main__":
             loss.backward()
             optimizer.step()
             
-            if(i+1) %600 ==0:
+            if(i+1) %5000 ==0:
                 print(f'epoch {epoch+1} / {num_epochs}, step {i+1}/{n_total_steps}, loss = {loss.item():.4f}')
     print("Finish Training.")
 
-    torch.save(torch.save(model.state_dict(),MODEL_FILE))
+    torch.save(model.state_dict(),MODEL_FILE)
 
