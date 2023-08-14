@@ -14,6 +14,7 @@ pip install -r requirements.txt
 ```python
 
 from sklearn.model_selection import train_test_split
+import numpy as np
 Total_data = np.loadtxt(FILE,delimiter=",",dtype=np.float32 ,skiprows=1)
 train_data, test_data = train_test_split(Total_data, test_size=0.2, random_state=42)
 
