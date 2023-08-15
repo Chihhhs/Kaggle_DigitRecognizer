@@ -51,5 +51,6 @@ with torch.no_grad():
         integer_list = [int(value) for value in predicted]
         # print(integer_list)
         All_predect.extend(integer_list)
+        print(All_predect)
 
-write_to_file(list(All_predect))
+write_to_file(All_predect)
