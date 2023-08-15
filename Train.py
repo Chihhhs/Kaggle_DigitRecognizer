@@ -3,12 +3,13 @@ import torch.nn as nn
 from torch.utils.data import DataLoader ,Dataset
 from sklearn.model_selection import train_test_split
 import numpy as np
+import os
 
 MODEL_FILE ="./model/Kaggle_Mnist.pt"
 FILE = "./digit-recognizer/train.csv"
 
 num_classes =10
-num_epochs = 4
+num_epochs = 8
 batch_size = 4 
 
 Total_data = np.loadtxt(FILE,delimiter=",",dtype=np.float32 ,skiprows=1)
@@ -21,7 +22,7 @@ class CusDataset(Dataset):
         # train_data loading
         self.img = torch.from_numpy(data[:, 1:].reshape(-1,1,28,28))
         self.label = torch.from_numpy(data[:, 0]).to(torch.int64)
-        self.n_samples =data.shape[0]
+        self.n_samples =data.shape[0] # batch_size
         
     def __getitem__(self,index):
         return self.img[index],self.label[index]
@@ -29,19 +30,14 @@ class CusDataset(Dataset):
     def __len__(self):
         return self.n_samples
 
-
 train_data = CusDataset(train_data)
 test_data = CusDataset(test_data)
-
 
 train_loader =DataLoader(dataset=train_data , batch_size =batch_size,shuffle =True,num_workers=0)
 test_loader =DataLoader(dataset=test_data , batch_size =batch_size,shuffle =False,num_workers=0)
 
-# if os.path.exists(MODEL_FILE):
-#     model.load_state_dict(torch.load(MODEL_FILE))
-
 class ConvNeuralNet(nn.Module):
-    def __init__(self,num_classes):
+    def __init__(self,num_classes=10):
         super(ConvNeuralNet, self).__init__()
         self.conv1 = nn.Conv2d(1, 16, 3) 
         self.relu = nn.ReLU()
@@ -52,19 +48,12 @@ class ConvNeuralNet(nn.Module):
         
     def forward(self,x):
         x = self.conv1(x)
-        # print(x.shape)
         x = self.relu(x)
-        # print(x.shape)
         x = self.pool(x)
-        # print(x.shape)
         x = self.conv2(x)
-        # print(x.shape)
         x = self.relu(x)
-        # print(x.shape)
         x = self.pool(x)
-        # print(x.shape)
         x = x.view(x.size(0),-1) 
-        # print(x.shape)
         x = self.fc1(x)
         x = self.relu(x)
         x = self.fc2(x)
@@ -90,7 +79,7 @@ def train():
             if(i+1) % 4000 ==0:
                 print(f'epoch {epoch+1} / {num_epochs}, step {i+1}/{n_total_steps}, loss = {loss.item():.4f}')
     print("Finish Training.")
-    # torch.save(model.state_dict(),MODEL_FILE)
+    torch.save(model.state_dict(),MODEL_FILE)
     
 def test():
     with torch.no_grad():
