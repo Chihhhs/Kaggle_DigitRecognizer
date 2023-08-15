@@ -2,3 +2,5 @@
 __pycache__
 Dataset.py
 torchvision_Mnist_model.py
+*.csv
+*.pt
