@@ -11,11 +11,11 @@ pip install -r requirements.txt
 
 + Download dataset
 
-[Train data](https://www.kaggle.com/competitions/digit-recognizer/data?select=train.csv)
+    [Train data](https://www.kaggle.com/competitions/digit-recognizer/data?select=train.csv)
 
-[Test csv](https://www.kaggle.com/competitions/digit-recognizer/data?select=test.csv)
+    [Test csv](https://www.kaggle.com/competitions/digit-recognizer/data?select=test.csv)
 
-[sample_submission.csv](https://www.kaggle.com/competitions/digit-recognizer/data?select=sample_submission.csv)
+    [sample_submission.csv](https://www.kaggle.com/competitions/digit-recognizer/data?select=sample_submission.csv)
 
 ## Training
 
