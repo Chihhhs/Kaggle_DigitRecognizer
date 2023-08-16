@@ -34,7 +34,7 @@ def write_to_file(predictions):
     print("Finish write.")
 
 test = TestDataset()
-test_loader = DataLoader(dataset=test ,batch_size = batch_size,shuffle =True,num_workers=0)
+test_loader = DataLoader(dataset=test ,batch_size = batch_size,shuffle =False,num_workers=0)
 
 model = ConvNeuralNet()
 
@@ -51,6 +51,6 @@ with torch.no_grad():
         integer_list = [int(value) for value in predicted]
         # print(integer_list)
         All_predect.extend(integer_list)
-        print(All_predect)
+        # print(All_predect)
 
 write_to_file(All_predect)
