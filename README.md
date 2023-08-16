@@ -40,4 +40,4 @@ First training Accuracy.
 
 ## Write ans
 
-temp pass
+Evaluate model with **test.csv** and write prediction to **sample_submission.csv**.
