@@ -2,7 +2,7 @@
 
 [Kaggle Recognizer Competition.](https://www.kaggle.com/competitions/digit-recognizer)
 
-+ install package.
++ Install package.
 
 ```bash
 
