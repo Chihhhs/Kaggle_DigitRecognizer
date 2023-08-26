@@ -9,7 +9,7 @@ import os
 MODEL_FILE ="./model/Kaggle_Mnist.pt"
 TEST_FILE = "./digit-recognizer/test.csv"
 
-batch_size = 4
+batch_size = 100
 
 class TestDataset(Dataset):
     def __init__(self):
