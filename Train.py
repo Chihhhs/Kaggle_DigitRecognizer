@@ -9,8 +9,8 @@ MODEL_FILE ="./model/Kaggle_Mnist.pt"
 FILE = "./digit-recognizer/train.csv"
 
 num_classes =10
-num_epochs = 8
-batch_size = 4 
+num_epochs = 10
+batch_size = 4
 
 Total_data = np.loadtxt(FILE,delimiter=",",dtype=np.float32 ,skiprows=1)
 
