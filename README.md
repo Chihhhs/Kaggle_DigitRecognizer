@@ -21,8 +21,6 @@ pip install -r requirements.txt
 
 `Train.py` : Train and Val.
 
-(Need to create dir model)
-
 ```python
 
 from sklearn.model_selection import train_test_split
