@@ -1,4 +1,4 @@
-# Kaggle_Mnist_Recognizer
+# Kaggle_DigitRecognizer
 
 [Kaggle Recognizer Competition.](https://www.kaggle.com/competitions/digit-recognizer)
 
