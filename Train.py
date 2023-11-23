@@ -3,14 +3,13 @@ import torch.nn as nn
 from torch.utils.data import DataLoader ,Dataset
 from sklearn.model_selection import train_test_split
 import numpy as np
-import os
 
 MODEL_FILE ="./model/Kaggle_Mnist.pt"
 FILE = "./digit-recognizer/train.csv"
 
 num_classes =10
 num_epochs = 10
-batch_size = 4
+batch_size = 220
 
 Total_data = np.loadtxt(FILE,delimiter=",",dtype=np.float32 ,skiprows=1)
 
@@ -78,7 +77,7 @@ def train():
             loss.backward()
             optimizer.step()
             
-            if(i+1) % 4000 ==0:
+            if(i+1) % 153 ==0:
                 print(f'epoch {epoch+1} / {num_epochs}, step {i+1}/{n_total_steps}, loss = {loss.item():.8f}')
     print("Finish Training.")
     torch.save(model.state_dict(),MODEL_FILE)
