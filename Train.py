@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 import numpy as np
 
 MODEL_FILE ="./model/Kaggle_Mnist.pt"
-FILE = "./digit-recognizer/train.csv"
+FILE = "./data/train.csv"
 
 num_classes =10
 num_epochs = 10
